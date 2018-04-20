@@ -18,8 +18,8 @@
 
 #include "mbed.h"
 #include "simple-mbed-cloud-client.h"
-#include "SDBlockDevice.h"
-#include "FATFileSystem.h"
+#include "FlashIAPBlockDevice.h"
+#include "LittleFileSystem.h"
 #include "EthernetInterface.h"
 
 // An event queue is a very useful structure to debounce information between contexts (e.g. ISR and normal threads)
@@ -27,8 +27,8 @@
 EventQueue eventQueue;
 
 // Storage implementation definition, currently using SDBlockDevice (SPI flash, DataFlash, and internal flash are also available)
-SDBlockDevice sd(PTE3, PTE1, PTE2, PTE4);
-FATFileSystem fs("sd", &sd);
+FlashIAPBlockDevice bd(0x100000 - (512 * 1024), 512 * 1024);
+LittleFileSystem fs("sd");
 
 // Declaring pointers for access to Mbed Cloud Client resources outside of main()
 MbedCloudClientResource *button_res;
@@ -101,6 +101,23 @@ void registered(const ConnectorClientEndpointInfo *endpoint) {
 
 int main(void) {
     printf("Starting Simple Mbed Cloud Client example\n");
+
+    printf("Mounting the filesystem... ");
+    fflush(stdout);
+    int err = fs.mount(&bd);
+    printf("%s\n", (err ? "Fail :(" : "OK"));
+    if (err) {
+        // Reformat if we can't mount the filesystem
+        // this should only happen on the first boot
+        printf("No filesystem found, formatting... ");
+        fflush(stdout);
+        err = fs.reformat(&bd);
+        printf("%s\n", (err ? "Fail :(" : "OK"));
+        if (err) {
+            error("error: %s (%d)\n", strerror(-err), err);
+        }
+    }
+
     printf("Connecting to the network using Ethernet...\n");
 
     // Connect to the internet (DHCP is expected to be on)
@@ -115,7 +132,7 @@ int main(void) {
     printf("Connected to the network successfully. IP address: %s\n", net.get_ip_address());
 
     // SimpleMbedCloudClient handles registering over LwM2M to Mbed Cloud
-    SimpleMbedCloudClient client(&net, &sd, &fs);
+    SimpleMbedCloudClient client(&net, &bd, &fs);
     int client_status = client.init();
     if (client_status != 0) {
         printf("Initializing Mbed Cloud Client failed (%d)\n", client_status);
