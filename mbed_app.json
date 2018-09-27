@@ -16,41 +16,37 @@
             "update-client.storage-address"  : "(1024*1024*64)",
             "update-client.storage-size"     : "(1024*1024*2)",
             "update-client.storage-locations": "1",
-            "mbed-trace.enable": null
-        },
-        "K64F": {
-            "target.features_add"              : ["BOOTLOADER"],
-            "sotp-section-1-address"           : "(32*1024)",
-            "sotp-section-1-size"              : "(4*1024)",
-            "sotp-section-2-address"           : "(36*1024)",
-            "sotp-section-2-size"              : "(4*1024)",
-            "sotp-num-sections"                : 2,
-            "update-client.application-details": "(40*1024)"
-        },
-        "K66F": {
-            "target.features_add"              : ["BOOTLOADER"],
-            "sotp-section-1-address"           : "(32*1024)",
-            "sotp-section-1-size"              : "(4*1024)",
-            "sotp-section-2-address"           : "(36*1024)",
-            "sotp-section-2-size"              : "(4*1024)",
-            "sotp-num-sections"                : 2,
-            "update-client.application-details": "(40*1024)"
-        },
-        "NUCLEO_F429ZI": {
-            "target.features_add"  : ["STORAGE", "BOOTLOADER"],
-            "target.app_offset": "0x10400",
-            "target.header_offset": "0x10000",
-            "target.bootloader_img": "bootloader/mbed-bootloader-F429ZI.bin",
+            "mbed-trace.enable": null,
             "target.components_add": ["SD"],
             "sd.SPI_MOSI"  : "PE_6",
             "sd.SPI_MISO"  : "PE_5",
             "sd.SPI_CLK"   : "PE_2",
             "sd.SPI_CS"    : "PE_4",
-            "update-client.application-details"     : "(0x08000000+64*1024)",
+            "target.features_add"  : ["STORAGE", "BOOTLOADER"],
+            "target.app_offset": "0x10400",
+            "target.header_offset": "0x10000",
+            "update-client.application-details"     : "(0x08000000+64*1024)"
+        },
+        "NUCLEO_F429ZI": {
+            "target.bootloader_img": "bootloader/mbed-bootloader-F429ZI.bin",
             "app.sotp-section-1-address": "(0x081C0000)",
             "app.sotp-section-1-size"   : "(128*1024)",
             "app.sotp-section-2-address": "(0x081E0000)",
             "app.sotp-section-2-size"   : "(128*1024)"
+        },
+        "NUCLEO_F767ZI": {
+            "target.bootloader_img": "bootloader/mbed-bootloader-F767ZI.bin",
+            "app.sotp-section-1-address": "(0x08180000)",
+            "app.sotp-section-1-size"   : "(256*1024)",
+            "app.sotp-section-2-address": "(0x081C0000)",
+            "app.sotp-section-2-size"   : "(256*1024)"
+        },
+        "NUCLEO_F746ZG": {
+            "target.bootloader_img": "bootloader/mbed-bootloader-F746ZG.bin",
+            "app.sotp-section-1-address": "(0x08080000)",
+            "app.sotp-section-1-size"   : "(256*1024)",
+            "app.sotp-section-2-address": "(0x080C0000)",
+            "app.sotp-section-2-size"   : "(256*1024)"
         }
     },
     "config": {
