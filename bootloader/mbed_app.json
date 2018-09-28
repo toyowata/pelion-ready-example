@@ -46,20 +46,20 @@
             "update-client.storage-locations": 1,
             "update-client.firmware-header-version": "2"
         },
-        "NUCLEO_F429ZI": {
+        "DISCO_L475VG_IOT01A": {
+            "sd.SPI_MOSI"  : "D11",
+            "sd.SPI_MISO"  : "D12",
+            "sd.SPI_CLK"   : "D13",
+            "sd.SPI_CS"    : "D10",
             "flash-start-address"              : "0x08000000",
-            "flash-size"                       : "(2048*1024)",
-            "nvstore.area_1_address"           : "(0x081C0000)",
-            "nvstore.area_1_size"              : "(128*1024)",
-            "nvstore.area_2_address"           : "(0x081E0000)",
-            "nvstore.area_2_size"              : "(128*1024)",
+            "flash-size"                       : "(1024*1024)",
+            "nvstore.area_1_address"           : "(0x08000000+((1024-4)*1024))",
+            "nvstore.area_1_size"              : "(2*1024)",
+            "nvstore.area_2_address"           : "(0x08000000+((1024-2)*1024))",
+            "nvstore.area_2_size"              : "(2*1024)",
             "update-client.application-details": "(MBED_CONF_APP_FLASH_START_ADDRESS+64*1024)",
             "application-start-address"        : "(MBED_CONF_APP_FLASH_START_ADDRESS+65*1024)",
-            "max-application-size"             : "DEFAULT_MAX_APPLICATION_SIZE",
-            "sd.SPI_MOSI"  : "PE_6",
-            "sd.SPI_MISO"  : "PE_5",
-            "sd.SPI_CLK"   : "PE_2",
-            "sd.SPI_CS"    : "PE_4"
+            "max-application-size"             : "DEFAULT_MAX_APPLICATION_SIZE"
         }
     }
 }

@@ -18,6 +18,7 @@
 
 #include "mbed.h"
 #include "simple-mbed-cloud-client.h"
+#include "ISM43362Interface.h"
 #include "FATFileSystem.h"
 
 // An event queue is a very useful structure to debounce information between contexts (e.g. ISR and normal threads)
@@ -29,7 +30,7 @@ BlockDevice* bd = BlockDevice::get_default_instance();
 FATFileSystem fs("sd", bd);
 
 // Default network interface object
-NetworkInterface *net;
+WiFiInterface *net;
 
 // Declaring pointers for access to Mbed Cloud Client resources outside of main()
 MbedCloudClientResource *button_res;
@@ -102,12 +103,12 @@ void registered(const ConnectorClientEndpointInfo *endpoint) {
 
 int main(void) {
     printf("Starting Simple Mbed Cloud Client example\n");
-    printf("Connecting to the network using Ethernet...\n");
+    printf("Connecting to the network...\n");
 
     // Connect to the internet (DHCP is expected to be on)
-    net = NetworkInterface::get_default_instance();
+    net = WiFiInterface::get_default_instance();
 
-    nsapi_error_t status = net->connect();
+    nsapi_error_t status = net->connect(MBED_CONF_APP_WIFI_SSID, MBED_CONF_APP_WIFI_PASSWORD, NSAPI_SECURITY_WPA_WPA2);
 
     if (status != NSAPI_ERROR_OK) {
         printf("Connecting to the network failed %d!\n", status);
