@@ -32,17 +32,17 @@ FATFileSystem fs("fs");
 // Default network interface object
 NetworkInterface *net = NetworkInterface::get_default_instance();
 
+InterruptIn btn(USER_BUTTON0);
 // Declaring pointers for access to Pelion Device Management Client resources outside of main()
 MbedCloudClientResource *button_res;
 MbedCloudClientResource *pattern_res;
 
-// This function gets triggered by the timer. It's easy to replace it by an InterruptIn and fall() mode on a real button
-void fake_button_press() {
+void button_press() {
     int v = button_res->get_value_int() + 1;
 
     button_res->set_value(v);
 
-    printf("Simulated button clicked %d times\n", v);
+    printf("User button clicked %d times\n", v);    
 }
 
 /**
@@ -147,10 +147,12 @@ int main(void) {
     // Register with Pelion Device Management
     client.register_and_connect();
 
-    // Placeholder for callback to update local resource when GET comes.
-    // The timer fires on an interrupt context, but debounces it to the eventqueue, so it's safe to do network operations
-    Ticker timer;
-    timer.attach(eventQueue.event(&fake_button_press), 5.0);
+    // Setup the button
+    btn.mode(PullUp);
+
+    // The button fall handler is placed in the event queue so it will run in
+    // thread context instead of ISR context, which allows safely updating the cloud resource
+    btn.fall(eventQueue.event(&button_press));
 
     // You can easily run the eventQueue in a separate thread if required
     eventQueue.dispatch_forever();
