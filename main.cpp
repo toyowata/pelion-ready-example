@@ -21,6 +21,21 @@
 #include "simple-mbed-cloud-client.h"
 #include "FATFileSystem.h"
 #include "LittleFileSystem.h"
+#include "MMA7660FC.h"
+
+#define ADDR_MMA7660 (0x4C << 1)
+
+#if defined(TARGET_WIO_3G) || defined (TARGET_WIO_BG96)
+DigitalOut GrovePower(GRO_POWR, 1);
+#define COLISN_PIN D20
+#else
+#define COLISN_PIN D2
+#endif
+
+MMA7660FC acc(I2C_SDA, I2C_SCL, ADDR_MMA7660);
+InterruptIn collision(COLISN_PIN);
+
+int hits = 0;
 
 // Default network interface object. Don't forget to change the WiFi SSID/password in mbed_app.json if you're using WiFi.
 NetworkInterface *net = NetworkInterface::get_default_instance();
@@ -35,10 +50,6 @@ FATFileSystem fs("fs", bd);
 // Use LittleFileSystem for non-SD block devices to enable wear leveling and other functions
 LittleFileSystem fs("fs", bd);
 #endif
-
-#if USE_BUTTON == 1
-InterruptIn button(BUTTON1);
-#endif /* USE_BUTTON */
 
 // Default LED to use for PUT/POST example
 DigitalOut led(LED1);
@@ -78,13 +89,13 @@ void post_callback(MbedCloudClientResource *resource, const uint8_t *buffer, uin
 }
 
 /**
- * Button handler
- * This function will be triggered either by a physical button press or by a ticker every 5 seconds (see below)
+ * Collision sensor handler
+ * This function will be triggered either by an interrupt from collision sensor
  */
-void button_press() {
+void hit_collision() {
     int v = button_res->get_value_int() + 1;
     button_res->set_value(v);
-    printf("Button clicked %d times\n", v);
+    printf("Collision hit %d times\n", v);
 }
 
 /**
@@ -92,8 +103,8 @@ void button_press() {
  * @param resource The resource that triggered the callback
  * @param status The delivery status of the notification
  */
-void button_callback(MbedCloudClientResource *resource, const NoticationDeliveryStatus status) {
-    printf("Button notification, status %s (%d)\n", MbedCloudClientResource::delivery_status_to_string(status), status);
+void collision_callback(MbedCloudClientResource *resource, const NoticationDeliveryStatus status) {
+    printf("Collision notification, status %s (%d)\n", MbedCloudClientResource::delivery_status_to_string(status), status);
 }
 
 /**
@@ -142,11 +153,11 @@ int main(void) {
     }
 
     // Creating resources, which can be written or read from the cloud
-    button_res = client.create_resource("3200/0/5501", "button_count");
+    button_res = client.create_resource("3200/0/5501", "collision_count");
     button_res->set_value(0);
     button_res->methods(M2MMethod::GET);
     button_res->observable(true);
-    button_res->attach_notification_callback(button_callback);
+    button_res->attach_notification_callback(collision_callback);
 
     led_res = client.create_resource("3201/0/5853", "led_state");
     led_res->set_value(led.read());
@@ -165,16 +176,8 @@ int main(void) {
     // Register with Pelion DM
     client.register_and_connect();
 
-#if USE_BUTTON == 1
-    // The button fires on an interrupt context, but debounces it to the eventqueue, so it's safe to do network operations
-    button.fall(eventQueue.event(&button_press));
-    printf("Press the user button to increment the LwM2M resource value...\n");
-#else
-    // The timer fires on an interrupt context, but debounces it to the eventqueue, so it's safe to do network operations
-    Ticker timer;
-    timer.attach(eventQueue.event(&button_press), 5.0);
-    printf("Simulating button press every 5 seconds...\n");
-#endif /* USE_BUTTON */
+    collision.mode(PullUp);
+    collision.fall(eventQueue.event(&hit_collision));
 
     // You can easily run the eventQueue in a separate thread if required
     eventQueue.dispatch_forever();

@@ -429,7 +429,7 @@
         "use-button": {
             "help": "Whether the target has a button",
             "macro_name": "USE_BUTTON",
-            "value": true
+            "value": false
         },
         "button-pressed-state": {
             "help": "Value of the button when pressed",
