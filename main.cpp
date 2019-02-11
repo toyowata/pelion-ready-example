@@ -27,6 +27,7 @@
 
 #if defined(TARGET_WIO_3G) || defined (TARGET_WIO_BG96)
 DigitalOut GrovePower(GRO_POWR, 1);
+DigitalOut SD_POWER(PA_15, 1);
 #define COLISN_PIN D20
 #else
 #define COLISN_PIN D2
@@ -58,10 +59,24 @@ DigitalOut led(LED1);
 MbedCloudClientResource *button_res;
 MbedCloudClientResource *led_res;
 MbedCloudClientResource *post_res;
+MbedCloudClientResource *acc_x_res;
+MbedCloudClientResource *acc_y_res;
+MbedCloudClientResource *acc_z_res;
 
 // An event queue is a very useful structure to debounce information between contexts (e.g. ISR and normal threads)
 // This is great because things such as network operations are illegal in ISR, so updating a resource in a button's fall() function is not allowed
 EventQueue eventQueue;
+
+void update_sensors() {
+    float x, y, z;
+    acc.read_Tilt(&x, &y, &z);
+    printf("x: %6.2f degree\n", x);
+    printf("y: %6.2f degree\n", y);
+    printf("z: %6.2f degree\n", z);
+    acc_x_res->set_value(x);
+    acc_y_res->set_value(y);
+    acc_z_res->set_value(z);
+}
 
 /**
  * PUT handler - sets the value of the built-in LED
@@ -117,6 +132,7 @@ void registered(const ConnectorClientEndpointInfo *endpoint) {
 
 int main(void) {
     printf("\nStarting Simple Pelion Device Management Client example\n");
+    acc.init();
 
 #if USE_BUTTON == 1
     // If the User button is pressed ons start, then format storage.
@@ -168,6 +184,21 @@ int main(void) {
     post_res->methods(M2MMethod::POST);
     post_res->attach_post_callback(post_callback);
 
+    acc_x_res = client.create_resource("3313/0/5702", "accelerometer_x");
+    acc_x_res->set_value(0);
+    acc_x_res->methods(M2MMethod::GET);
+    acc_x_res->observable(true);
+
+    acc_y_res = client.create_resource("3313/0/5703", "accelerometer_y");
+    acc_y_res->set_value(0);
+    acc_y_res->methods(M2MMethod::GET);
+    acc_y_res->observable(true);
+
+    acc_z_res = client.create_resource("3313/0/5704", "accelerometer_z");
+    acc_z_res->set_value(0);
+    acc_z_res->methods(M2MMethod::GET);
+    acc_z_res->observable(true);
+
     printf("Initialized Pelion Device Management Client. Registering...\n");
 
     // Callback that fires when registering is complete
@@ -178,6 +209,9 @@ int main(void) {
 
     collision.mode(PullUp);
     collision.fall(eventQueue.event(&hit_collision));
+
+    Ticker timer;
+    timer.attach(eventQueue.event(update_sensors), 3.0);
 
     // You can easily run the eventQueue in a separate thread if required
     eventQueue.dispatch_forever();

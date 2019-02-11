@@ -201,6 +201,23 @@
             "sotp-section-2-size"               : "(4*1024)",
             "target.bootloader_img"             : "bootloader/mbed-bootloader-SDT64B.bin"
         },
+        "RZ_A1H": {
+            "target.features_add"               : ["BOOTLOADER"],
+            "target.components_add"             : ["SD"],
+            "target.macros_add"                 : ["MBEDTLS_TEST_NULL_ENTROPY", "MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES"],
+            "target.network-default-interface-type" : "ETHERNET",
+            "flash-start-address"               : "0x18000000",
+            "flash-size"                        : "(8*1024*1024)",
+            "sotp-section-1-address"            : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 2*(4*1024))",
+            "sotp-section-1-size"               : "(4*1024)",
+            "sotp-section-2-address"            : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 1*(4*1024))",
+            "sotp-section-2-size"               : "(4*1024)",
+            "sotp-num-sections"                 : 2,
+            "target.bootloader_img"             : "bootloader/mbed-bootloader-RZ_A1H.bin",
+            "target.header_offset"              : "0x10000",
+            "target.app_offset"                 : "0x10400",
+            "update-client.application-details" : "(MBED_CONF_APP_FLASH_START_ADDRESS + 64*1024)"
+        },
         "GR_LYCHEE": {
             "target.components_add"             : ["SD"],
             "target.extra_labels_add"           : ["ESP32_DRIVER"],
