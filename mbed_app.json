@@ -353,9 +353,9 @@
             "cellular.use-apn-lookup"               : false,
             "cellular.debug-at"                     : false,
             "nsapi.default-cellular-sim-pin"        : "\"0000\"",
-            "nsapi.default-cellular-apn"            : "\"APN\"",
-            "nsapi.default-cellular-username"       : "\"user\"",
-            "nsapi.default-cellular-password"       : "\"password\""
+            "nsapi.default-cellular-apn"            : "\"soracom.io\"",
+            "nsapi.default-cellular-username"       : "\"sora\"",
+            "nsapi.default-cellular-password"       : "\"sora\""
         },
         "WIO_BG96": {
             "target.features_add"                   : ["STORAGE", "BOOTLOADER", "LWIP"],
@@ -384,9 +384,9 @@
             "cellular.use-apn-lookup"               : false,
             "cellular.debug-at"                     : false,
             "nsapi.default-cellular-sim-pin"        : "\"0000\"",
-            "nsapi.default-cellular-apn"            : "\"APN\"",
-            "nsapi.default-cellular-username"       : "\"user\"",
-            "nsapi.default-cellular-password"       : "\"password\""
+            "nsapi.default-cellular-apn"            : "\"soracom.io\"",
+            "nsapi.default-cellular-username"       : "\"sora\"",
+            "nsapi.default-cellular-password"       : "\"sora\""
         }    },
     "config": {
         "format-storage-layer-on-error": {

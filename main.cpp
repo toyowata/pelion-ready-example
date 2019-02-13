@@ -76,6 +76,9 @@ void update_sensors() {
     acc_x_res->set_value(x);
     acc_y_res->set_value(y);
     acc_z_res->set_value(z);
+    
+    printf("Collision hit %d times\n", hits);
+    button_res->set_value(hits);
 }
 
 /**
@@ -108,9 +111,7 @@ void post_callback(MbedCloudClientResource *resource, const uint8_t *buffer, uin
  * This function will be triggered either by an interrupt from collision sensor
  */
 void hit_collision() {
-    int v = button_res->get_value_int() + 1;
-    button_res->set_value(v);
-    printf("Collision hit %d times\n", v);
+    hits++;
 }
 
 /**
