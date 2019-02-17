@@ -28,6 +28,10 @@ NetworkInterface *net = NetworkInterface::get_default_instance();
 // Default block device available on the target board
 BlockDevice *bd = BlockDevice::get_default_instance();
 
+#if defined(TARGET_WIO_3G) || defined(TARGET_WIO_BG96)
+DigitalOut SD_POWER(PA_15, 1);
+#endif
+
 #if COMPONENT_SD || COMPONENT_NUSD
 // Use FATFileSystem for SD card type blockdevices
 FATFileSystem fs("fs", bd);
