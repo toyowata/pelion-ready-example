@@ -335,9 +335,10 @@
             "lwip.tcp-enabled"                      : true,
             "cellular.use-apn-lookup"               : false,
             "cellular.debug-at"                     : false,
+            "use-button"                            : false,
             "nsapi.default-cellular-sim-pin"        : "\"0000\"",
             "nsapi.default-cellular-apn"            : "\"APN\"",
-            "nsapi.default-cellular-username"       : "\"user\"",
+            "nsapi.default-cellular-username"       : "\"username\"",
             "nsapi.default-cellular-password"       : "\"password\""
         }
     },
