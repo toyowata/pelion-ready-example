@@ -22,8 +22,8 @@
             "client_app.pal_dtls_peer_min_timeout" : 5000,
             "mbed-trace.enable"                 : null,
             "nsapi.default-wifi-security"       : "WPA_WPA2",
-            "nsapi.default-wifi-ssid"           : "\"SSID\"",
-            "nsapi.default-wifi-password"       : "\"Password\""
+            "nsapi.default-wifi-ssid"           : "\"AirPort38991\"",
+            "nsapi.default-wifi-password"       : "\"3060025132786\""
         },
         "K64F": {
             "target.components_add"             : ["SD"],
@@ -60,11 +60,15 @@
             "target.bootloader_img"             : "bootloader/mbed-bootloader-NUCLEO_F429ZI.bin"
         },
         "NUCLEO_F767ZI": {
-            "target.components_add"             : ["SD"],
-            "sd.SPI_MOSI"                       : "PC_12",
-            "sd.SPI_MISO"                       : "PC_11",
-            "sd.SPI_CLK"                        : "PC_10",
-            "sd.SPI_CS"                         : "PC_9",
+            "target.components_add"             : ["SPIF"],
+            "target.extra_labels_add"           : ["ESP32_DRIVER"],
+            "target.network-default-interface-type" : "WIFI",
+            "target.device_has_remove"          : ["SERIAL_FC"],
+            "colision-pin"                      : "PB_8",
+            "spif-driver.SPI_MOSI"              : "PE_14",
+            "spif-driver.SPI_MISO"              : "PE_13",
+            "spif-driver.SPI_CLK"               : "PE_12",
+            "spif-driver.SPI_CS"                : "PE_11",
             "flash-start-address"               : "0x08000000",
             "flash-size"                        : "(2048*1024)",
             "sotp-section-1-address"            : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 2*(256*1024))",
@@ -206,6 +210,10 @@
             "target.components_add"             : ["SD"],
             "target.macros_add"                 : ["MBEDTLS_TEST_NULL_ENTROPY", "MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES"],
             "target.network-default-interface-type" : "ETHERNET",
+            "target.bootloader_img"             : "bootloader/mbed-bootloader-RZ_A1H.bin",
+            "target.header_offset"              : "0x10000",
+            "target.app_offset"                 : "0x10400",
+            "colision-pin"                      : "A2",
             "flash-start-address"               : "0x18000000",
             "flash-size"                        : "(8*1024*1024)",
             "sotp-section-1-address"            : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 2*(4*1024))",
@@ -213,15 +221,13 @@
             "sotp-section-2-address"            : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 1*(4*1024))",
             "sotp-section-2-size"               : "(4*1024)",
             "sotp-num-sections"                 : 2,
-            "target.bootloader_img"             : "bootloader/mbed-bootloader-RZ_A1H.bin",
-            "target.header_offset"              : "0x10000",
-            "target.app_offset"                 : "0x10400",
             "update-client.application-details" : "(MBED_CONF_APP_FLASH_START_ADDRESS + 64*1024)"
         },
         "GR_LYCHEE": {
             "target.components_add"             : ["SD"],
             "target.extra_labels_add"           : ["ESP32_DRIVER"],
             "target.network-default-interface-type" : "WIFI",
+            "colision-pin"                      : "A2",
             "flash-start-address"               : "0x18000000",
             "flash-size"                        : "(8*1024*1024)",
             "sotp-section-1-address"            : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 2*(4*1024))",
@@ -334,6 +340,7 @@
             "target.bootloader_img"                 : "bootloader/mbed-bootloader-WIO_3G.bin",
             "target.app_offset"                     : "0x10400",
             "target.header_offset"                  : "0x10000",
+            "colision-pin"                          : "D20",
             "sd.SPI_MOSI"                           : "PC_12",
             "sd.SPI_MISO"                           : "PC_11",
             "sd.SPI_CLK"                            : "PC_10",
@@ -352,10 +359,10 @@
             "lwip.tcp-enabled"                      : true,
             "cellular.use-apn-lookup"               : false,
             "cellular.debug-at"                     : false,
-            "nsapi.default-cellular-sim-pin"        : "\"0000\"",
-            "nsapi.default-cellular-apn"            : "\"soracom.io\"",
-            "nsapi.default-cellular-username"       : "\"sora\"",
-            "nsapi.default-cellular-password"       : "\"sora\""
+            "nsapi.default-cellular-sim-pin"        : "\"1234\"",
+            "nsapi.default-cellular-apn"            : "\"stream.co.uk\"",
+            "nsapi.default-cellular-username"       : "\"streamip\"",
+            "nsapi.default-cellular-password"       : "\"streamip\""
         },
         "WIO_BG96": {
             "target.features_add"                   : ["STORAGE", "BOOTLOADER", "LWIP"],
@@ -365,6 +372,7 @@
             "target.bootloader_img"                 : "bootloader/mbed-bootloader-WIO_BG96.bin",
             "target.app_offset"                     : "0x10400",
             "target.header_offset"                  : "0x10000",
+            "colision-pin"                          : "D20",
             "sd.SPI_MOSI"                           : "PC_12",
             "sd.SPI_MISO"                           : "PC_11",
             "sd.SPI_CLK"                            : "PC_10",
@@ -451,6 +459,11 @@
         "button-pressed-state": {
             "help": "Value of the button when pressed",
             "value": 1
+        },
+        "colision-pin": {
+            "help": "Pinname for colision sensor",
+            "macro_name": "COLISN_PIN",
+            "value": "D2"
         }
     }
 }

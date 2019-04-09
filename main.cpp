@@ -28,12 +28,12 @@
 #if defined(TARGET_WIO_3G) || defined (TARGET_WIO_BG96)
 DigitalOut GrovePower(GRO_POWR, 1);
 DigitalOut SD_POWER(PA_15, 1);
-#define COLISN_PIN D20
-#else
-#define COLISN_PIN D2
 #endif
-
+#if defined(TARGET_NUCLEO_F767ZI)
+MMA7660FC acc(PD_13, PD_12, ADDR_MMA7660);
+#else
 MMA7660FC acc(I2C_SDA, I2C_SCL, ADDR_MMA7660);
+#endif
 InterruptIn collision(COLISN_PIN);
 
 int hits = 0;
