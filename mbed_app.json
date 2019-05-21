@@ -740,8 +740,8 @@
             "target.app_offset"                         : "0x10400",
             "mbed-cloud-client.external-sst-support"    : null,
             "use-button"                                : false,
-            "nsapi.default-wifi-ssid"                   : "\"Buffalo-G-C42E\"",
-            "nsapi.default-wifi-password"               : "\"issvsunfx8te3\""
+            "nsapi.default-wifi-ssid"                   : "\"SSID\"",
+            "nsapi.default-wifi-password"               : "\"PASSWORD\""
         }
     },
     "config": {
