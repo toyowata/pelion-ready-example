@@ -592,6 +592,26 @@
             "update-client.application-details": "(MBED_CONF_APP_FLASH_START_ADDRESS + 128*1024)",
             "application-start-address"        : "(MBED_CONF_APP_FLASH_START_ADDRESS + 129*1024)",
             "max-application-size"             : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - MBED_CONF_APP_APPLICATION_START_ADDRESS)"
+        },
+        "UHURU_RAVEN": {
+            "target.components_add"            : ["SPIF"],
+            "spif-driver.SPI_MOSI"             : "PE_14",
+            "spif-driver.SPI_MISO"             : "PE_13",
+            "spif-driver.SPI_CLK"              : "PE_12",
+            "spif-driver.SPI_CS"               : "PE_11",
+            "flash-start-address"              : "0x08000000",
+            "flash-size"                       : "(2048*1024)",
+            "nvstore.area_1_address"           : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 2*(256*1024))",
+            "nvstore.area_1_size"              : "(256*1024)",
+            "nvstore.area_2_address"           : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 1*(256*1024))",
+            "nvstore.area_2_size"              : "(256*1024)",
+            "update-client.storage-address"    : "(64*1024*1024)",
+            "update-client.storage-size"       : "(2*1024*1024)",
+            "update-client.storage-locations"  : 1,
+            "update-client.firmware-header-version": "2",
+            "update-client.application-details": "(MBED_CONF_APP_FLASH_START_ADDRESS + 64*1024)",
+            "application-start-address"        : "(MBED_CONF_APP_FLASH_START_ADDRESS + 65*1024)",
+            "max-application-size"             : "DEFAULT_MAX_APPLICATION_SIZE"
         }
     }
 }
