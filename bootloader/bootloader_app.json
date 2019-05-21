@@ -605,7 +605,7 @@
             "nvstore.area_1_size"              : "(256*1024)",
             "nvstore.area_2_address"           : "(MBED_CONF_APP_FLASH_START_ADDRESS + MBED_CONF_APP_FLASH_SIZE - 1*(256*1024))",
             "nvstore.area_2_size"              : "(256*1024)",
-            "update-client.storage-address"    : "(64*1024*1024)",
+            "update-client.storage-address"    : "(2*1024*1024)",
             "update-client.storage-size"       : "(2*1024*1024)",
             "update-client.storage-locations"  : 1,
             "update-client.firmware-header-version": "2",
